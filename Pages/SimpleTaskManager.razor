@@ -1,0 +1,37 @@
+﻿@page "/tasks"
+@using global::SimpleTaskManager.Services
+@inject TaskService TaskService
+
+<h3>Task Manager</h3>
+
+<input @bind="newDescription" placeholder="Description" />
+<input @bind="newDueDate" placeholder="Due Date" />
+<button @onclick="AddTask">Add</button>
+
+<ul>
+    @foreach (var task in TaskService.GetAllTasks())
+    {
+        <li>
+            <input type="checkbox" checked="@task.IsCompleted" @onclick="() => Toggle(task.Id)" />
+            <b>@task.Description</b> - @task.DueDate
+            <button @onclick="() => Delete(task.Id)">Delete</button>
+        </li>
+    }
+</ul>
+
+@code {
+    string newDescription = "";
+    string newDueDate = "";
+
+    void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newDescription))
+        {
+            TaskService.AddTask(newDescription, newDueDate);
+            newDescription = newDueDate = "";
+        }
+    }
+
+    void Toggle(int id) => TaskService.ToggleComplete(id);
+    void Delete(int id) => TaskService.DeleteTask(id);
+}

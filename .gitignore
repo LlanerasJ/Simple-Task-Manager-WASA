@@ -1,0 +1,11 @@
+# Ignore build artifacts and IDE files
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# Allow source files
+!*.cs
+!*.csproj
+!*.sln
